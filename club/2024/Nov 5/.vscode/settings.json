@@ -1,9 +1,6 @@
 {
   "files.associations": {
     "string": "cpp",
-    "deque": "cpp",
-    "regex": "cpp",
-    "iostream": "cpp",
     "vector": "cpp"
   }
 }

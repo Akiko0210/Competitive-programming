@@ -1,0 +1,70 @@
+#include <bits/stdc++.h>
+#define ll long long
+#define ull unsigned long long
+#define ss second
+#define ff first
+#define pb push_back
+#define pii pair<int, int>
+#define INF INT_MAX
+using namespace std;
+void debug_out() { cerr << endl; }
+template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { cerr << ' ' << H; debug_out(T...); }
+#ifdef AKIKO_DEBUG
+#define debug(...) cerr << "\033[1;31m(" << #__VA_ARGS__ << "):\033[0m", debug_out(__VA_ARGS__)
+#else
+#define debug(...)
+#endif
+
+#define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
+
+const ll MOD = 1e9 + 7;
+
+void solve() {
+    int n, total = 0, bonus = 0;
+    string s;
+    cin >> n >> s;
+    for(char c : s) {
+        total += c - '0';
+    }
+    string ans = "";
+    for(int i = 0; i < n && total > 0; i++) {
+        ans += '0' + ((total + bonus) % 10);
+        bonus = (total + bonus) / 10;
+        total -= (s[n - 1 - i] - '0');
+    }
+    if(bonus > 0) {
+        ans += '0' + bonus;
+    }
+    reverse(ans.begin(), ans.end());
+    cout << ans << "\n";
+}
+
+int main() {
+    int t = 1;
+    cin >> t;
+    while(t--) {
+        solve();
+    }
+    /*
+    456480697259671309012631002
+    507200774732968121125145546
+    644430421122981561923779594
+    12345
+     1234
+      123
+       12
+        1
+
+    */
+    return 0;
+}
+
+/* stuff you should look for
+    * int overflow, array bounds
+    * special cases (n=1?)
+    * do smth instead of nothing and stay organized
+    * WRITE STUFF DOWN
+    * DON'T GET STUCK ON ONE APPROACH
+*/
+

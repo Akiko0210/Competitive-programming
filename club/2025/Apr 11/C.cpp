@@ -21,23 +21,37 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
-    /*
-    
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
-        cin >> a[i];
+    int n, x;
+    cin >> n >> x;
+    vector<int> a(n);
+    for(int &t : a) {
+        cin >> t;
     }
 
     sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
+    int sum = 0;
+    for(int i = 0; i < n; i++) {
+        sum += a[i];
+        if(sum == x) {
+            if(i < n - 1) {
+                swap(a[0], a[n - 1]);
+                break;
+            } else {
+                cout << "NO\n";
+                return;
+            }
+        }
     }
 
-    cout << ans << "\n";
+    cout << "YES\n";
+    for(int t : a) {
+        cout << t << " ";
+    }
+    cout << "\n";
+    return;
+
+
+
 }
 
 int main() {

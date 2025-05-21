@@ -1,0 +1,7 @@
+number = int(input("What's your favorite number?))
+
+print("Here are the numbers [0, number - 1]")
+for i in range (number):
+    print(i)
+
+    

@@ -21,23 +21,50 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
-    /*
+    ll n;
+    cin >> n;
+    if(n < 3) {
+        cout << "-1\n";
+        return;
+    }
+
+    if(n & 1) {
+        cout << "2\n";
+        return;
+    }
+
     
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
-        cin >> a[i];
-    }
+    /*
+    k different. 
+    k * (k - 1) / 2
+    n = k * (k - 1) / 2 + k * x
+    n = k * (k - 1) / 2 + k * x
 
-    sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
-    }
 
-    cout << ans << "\n";
+    n >= 3
+
+    n is odd, 2x + 1 at least 3
+    k = 2, 1, 2x works. 
+    
+    n is 3x
+    k = 3, 1 2 3, at least 6 
+    
+    n is 4x
+    k = 4, 1 2 3 4, = 10 
+
+    if n has odd divisor, k, and more than k * (k + 1) / 2, it's instant k. 
+
+    3 5 7 9 11 ... 
+     4 
+       6  9   12  ....
+         8
+           10     14     18 ....
+                13
+
+                     15      20      25 ....
+    */
+
+
 }
 
 int main() {

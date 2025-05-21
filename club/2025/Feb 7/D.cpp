@@ -20,29 +20,38 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 
 const ll MOD = 1e9 + 7;
 
+void find(vector<int>& a, vector<int>& b) {
+    for(int i = 0; i < b.size(); i++) {
+        if(a[i] != b[i]) {
+            cout << a[i] << "\n";
+            return;
+        }
+    }
+    cout << a.back() << "\n";
+    return;
+}
+
 void solve() {
-    /*
-    
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
-        cin >> a[i];
+    int n;
+    cin >> n;
+    vector<vector<int> > a(3);
+    for(int i = 0; i < 3; i++) {
+        for(int j = 0; j < n - i; j++) {
+            int x;
+            cin >> x;
+            a[i].pb(x);
+        }
+        sort(a[i].begin(), a[i].end());
+        if(i > 0) {
+            find(a[i - 1], a[i]);
+        }
     }
 
-    sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
-    }
-
-    cout << ans << "\n";
 }
 
 int main() {
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while(t--) {
         solve();
     }

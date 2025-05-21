@@ -20,32 +20,38 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 
 const ll MOD = 1e9 + 7;
 
-void solve() {
-    /*
-    
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
-        cin >> a[i];
-    }
-
-    sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
-    }
-
-    cout << ans << "\n";
-}
-
 int main() {
-    int t = 1;
-    cin >> t;
-    while(t--) {
-        solve();
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int> > G(n);
+    for(int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        a--;
+        b--;
+        G[a].pb(b);
     }
+
+    vector dp(1 << (n), vector (n, 0));
+    dp[1][0] = 1;
+    
+    for(int mask = 1; mask < (1 << n) - 1; mask++) {
+        // hasn't visit first city or already visited last city.
+        if(!(mask & 1) || (mask & (1 << (n - 1)))) continue;
+    
+        for(int i = 0; i < n; i++) {
+            if(mask & (1 << i)) {
+                // from i, move to the others.
+                for(int x : G[i]) {
+                    if(!(mask & (1 << x))) {
+                        (dp[mask ^ (1 << x)][x] += dp[mask][i]) %= MOD;
+                    }
+                }
+            }
+        }
+    }
+
+    cout << dp[(1 << n) - 1][n - 1] << "\n";
 
 
     return 0;

@@ -20,32 +20,34 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 
 const ll MOD = 1e9 + 7;
 
-void solve() {
-    /*
-    
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
+int main() {
+    int n;
+    cin >> n;
+    vector<string> a(n);
+    for(int i = 0; i < n; i++) {
         cin >> a[i];
     }
 
-    sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
-    }
+    int dx[] = {-1, 0, -1, 1, 1};
+    int dy[] = {-1, 0, 1, -1, 1};
 
+    auto iscross = [&] (int x, int y) {
+        for(int i = 0; i < 5; i++) {
+            int nx = x + dx[i], ny = y + dy[i];
+            if(a[nx][ny] != 'X') {
+                return false;
+            }
+        }
+        return true;
+    };
+
+    int ans = 0;
+    for(int i = 1; i < n - 1; i++) {
+        for(int j = 1; j < n - 1; j++) {
+            ans += iscross(i, j);
+        }
+    }
     cout << ans << "\n";
-}
-
-int main() {
-    int t = 1;
-    cin >> t;
-    while(t--) {
-        solve();
-    }
 
 
     return 0;

@@ -1,0 +1,11 @@
+#include <iostream>
+
+using namespace std;
+
+int main() {
+    cout << "Club day 2025 Spring\n";
+    cout << "Competitive Programming Club\n";
+
+
+    return 0;
+}

@@ -1,0 +1,3 @@
+SELECT members
+FROM club
+WHERE newMember IS TRUE

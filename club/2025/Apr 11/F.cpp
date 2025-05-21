@@ -22,22 +22,86 @@ const ll MOD = 1e9 + 7;
 
 void solve() {
     /*
+    8
+    4 - A
+    2 - B
+    1 - A
+    1 - B
+
+    B = 3
+    A = 5
+
+    1 - A
+    1 - B
+    3 - A
+    1 - B
+    1 - A
+    1 - B
+
+    when (2k + 1) * 2 -> take 2k + 1
+    when (2k) * 2 -> take 1
+
+
+    n = 16
+    1)
+    8 - A
+    4 - B
+    2 - A
+    1 - B
+    1 - A
+
+    B = 5
+    A = 11
+
+    2)
+    1 - A (15)
+    1 - B (14)
+    7 - A (7)
+    1 - B (6)
+    3 - A (3)
+    1 - B (2)
+    1 - A (1)
+    1 - B (1)
+
+    4 - 12
+
+    n = 5
+    1 - A
+    1 - B
+    1 - A
+    1 - B
+    1 - A
     
-    */ 
-    int n, k, sum = 0, ans = 0;
-    cin >> n >> k;
-    vector<int> a(k);
-    for(int i = 0; i < k; i++) {
-        cin >> a[i];
+    
+    */
+
+    ll n;
+    cin >> n;
+    vector<ll> p(2, 0);
+    int ind = 0;
+
+    while(n) {
+        if(n & 1) {
+            n--;
+            p[ind]++;
+        } else {
+            if(n % 4 == 2) {
+                n /= 2;
+                p[ind] += n;
+            } else {
+                if(n > 4) {
+                    n--;
+                    p[ind]++;
+                } else {
+                    n /= 2;
+                    p[ind] += n;
+                }
+            }
+        }
+        ind = 1 - ind;
     }
 
-    sort(a.begin(), a.end());
-    for(int i = k - 1; i >= 0 && sum + n - a[i] < n; i--) {
-        sum += n - a[i];
-        ans++;
-    }
-
-    cout << ans << "\n";
+    cout << p[0] << "\n";
 }
 
 int main() {

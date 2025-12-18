@@ -19,20 +19,78 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
+const int N = 1e5;
+vector<int> lvl(N + 1, 0), ind(N + 1), sizes(N + 1, 1);
+vector<vector<int> > G(N + 1), layers(N + 1);
+vector<vector<int> > dp(20, vector<int> (N + 1, 0));
+int curind = 0;
 
-void solve() {
+void dfs(int cur) {
+    ind[cur] = curind++;
+    layers[lvl[cur]].pb(ind[cur]);
+    for(int x : G[cur]) {
+        dp[0][x] = cur;
+        lvl[x] = lvl[cur] + 1;
+        dfs(x);
+        sizes[cur] += sizes[x];
+    }
+}
+
+int jump(int v, int p) {
+    for(int i = 0; i < 20; i++) {
+        if(p & (1 << i)) {
+            v = dp[i][v];
+        }
+    }
+    return v;
+}
+
+int get_cousins(int v, int p) {
+    if(lvl[v] <= p) 
+        return 0;
+
+    int par = jump(v, p);
+    int len = upper_bound(layers[lvl[v]].begin(), layers[lvl[v]].end(), ind[par] + sizes[par]) - \
+              lower_bound(layers[lvl[v]].begin(), layers[lvl[v]].end(), ind[par]);
+    return len - 1;
 }
 
 int main() {
-    int t = 1;
-    cin >> t;
-    while(t--) {
-        solve();
+    int n;
+    cin >> n;
+
+    for(int i = 1; i <= n; i++) {
+        int p;
+        cin >> p;
+        G[p].pb(i);
     }
 
+    dfs(0);
+    
+    for(int j = 1; j < 20; j++) {
+        for(int i = 0; i <= n; i++) {
+            dp[j][i] = dp[j - 1][dp[j - 1][i]];
+        }
+    }
 
+    int q;
+    cin >> q;
+    while(q--) {
+        int v, p;
+        cin >> v >> p;
+        cout << get_cousins(v, p) << " ";
+    }
+    cout << "\n";
+
+
+
+    
     return 0;
 }
+
+
+
+
 
 /* stuff you should look for
     * int overflow, array bounds

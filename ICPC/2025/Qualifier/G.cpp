@@ -16,29 +16,25 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
-const ll MOD = 1e9 + 7;
-const int N = 1e5;
+const ll MOD = 998244353;
 
-vector<vector<int> > G;
+ll pw(ll a, ll b) {
+    if(b == 1) return a;
 
-void solve() {
-    int n;
-    cin >> n;
-    G.clear();
-    G.resize(n);
-
-    ///
-
+    ll h = pw(a, b / 2);
+    h = h * h % MOD;
+    if(b & 1) {
+        h = h * a % MOD;
+    }
+    return h;
 }
 
 int main() {
-    int t = 1;
-    cin >> t;
-    while(t--) {
-        solve();
-    }
-
+    ll n, k;
+    cin >> n >> k;
+    cout << n * pw(2 * k, 2 * k) % MOD * pw(pw(2 * k + 1, MOD - 2), 2 * k) % MOD << "\n";
 
     return 0;
 }
@@ -50,3 +46,4 @@ int main() {
     * WRITE STUFF DOWN
     * DON'T GET STUCK ON ONE APPROACH
 */
+

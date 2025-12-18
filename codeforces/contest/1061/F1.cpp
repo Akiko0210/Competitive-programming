@@ -16,20 +16,51 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
-const int N = 1e5;
-
-vector<vector<int> > G;
 
 void solve() {
     int n;
     cin >> n;
-    G.clear();
-    G.resize(n);
+    // debug(n);
+    vector<int> p(n);
+    vector<int> pos(n + 1, -1);
+    for(int i = 0; i < n; i++) {
+        cin >> p[i];
+        pos[p[i]] = i;
+    }
 
-    ///
+    auto operation = [&] (int x) {
+        int a = pos[x], b = pos[x - 1], c = pos[x - 2];
+        if(a > b || a > c) {
+            return false;
+        }
+        p[a] -= 2;
+        p[b]++;
+        p[c]++;
+        pos[p[a]] = a;
+        pos[p[b]] = b;
+        pos[p[c]] = c;
+        return true;
+    };
 
+    int cur = 3;
+    /*
+    when you do operation on x, you can't do operation on any other number except x-2. 
+    */ 
+
+    while(cur <= n) {
+        while(operation(cur)) {
+            cur -= 2;
+        }
+        cur++;
+    }
+
+    for(int x : p) {
+        cout << x << " ";
+    }
+    cout << "\n";
 }
 
 int main() {
@@ -50,3 +81,4 @@ int main() {
     * WRITE STUFF DOWN
     * DON'T GET STUCK ON ONE APPROACH
 */
+

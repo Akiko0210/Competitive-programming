@@ -16,28 +16,48 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
-const int N = 1e5;
-
-vector<vector<int> > G;
-
-void solve() {
-    int n;
-    cin >> n;
-    G.clear();
-    G.resize(n);
-
-    ///
-
-}
 
 int main() {
-    int t = 1;
-    cin >> t;
-    while(t--) {
-        solve();
+    string s, vowels = "AEIOU";
+    cin >> s;
+    vector<int> cnt(26, 0);
+    for(char c : s) {
+        cnt[c - 'A']++;
     }
+    int vowelSum = 0;
+    for(char c : vowels) {
+        vowelSum += cnt[c - 'A'];
+    }
+
+    int n = s.size(), consSum = n - vowelSum, ans = 0;
+    consSum -= cnt['Y' - 'A'] + cnt['N' - 'A'] + cnt['G' - 'A'];
+    while(true) {
+        if(vowelSum == 0) {
+            if(cnt['Y' - 'A']) {
+                cnt['Y' - 'A']--;
+                vowelSum++;
+            } else {
+                break;
+            }
+        }
+        // have at least 1 vowel.
+        if(consSum >= 2) {
+            consSum -= 2;
+            vowelSum --;
+            ans++;
+            continue;
+        }
+
+
+
+    }
+
+
+
+
 
 
     return 0;
@@ -50,3 +70,4 @@ int main() {
     * WRITE STUFF DOWN
     * DON'T GET STUCK ON ONE APPROACH
 */
+

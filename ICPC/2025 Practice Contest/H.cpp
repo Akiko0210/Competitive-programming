@@ -16,30 +16,27 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
 
 int main() {
-    int n, k;
-    cin >> n >> k;
-    vector<int> a(n);
+    int n, l = 0, r = 1e9;
+    cin >> n;
 
-    long long sum = 0;
     for(int i = 0; i < n; i++) {
-        cin >> a[i];
-        sum += a[i];
+        int a, b;
+        cin >> a >> b;
+        l = max(l, a);
+        r = min(r, b);
     }
 
-    sort(a.begin(), a.end());
-    
-    // for case 0, 1:
-    if((long long)a[n - 1] * k < (sum)) {
-        cout << (k - sum % k) % k << "\n";
-        return 0;
+    if(l <= r) {
+        cout << r - l + 1 << " " << l << "\n";
+    } else {
+        cout << "bad news\n";
     }
 
-    // for case 2:
-    cout << (long long)a[n - 1] * (k) - sum << "\n";
     return 0;
 }
 

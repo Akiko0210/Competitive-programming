@@ -16,20 +16,24 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
-const int N = 1e5;
-
-vector<vector<int> > G;
 
 void solve() {
-    int n;
-    cin >> n;
-    G.clear();
-    G.resize(n);
-
-    ///
-
+    string s, t;
+    cin >> s >> t;
+    vector<int> present(26, 0);
+    for(char c : s) {
+        present[c - 'a'] = 1;
+    }
+    for(char c : t) {
+        if(!present[c - 'a']) {
+            cout << "NO\n";
+            return;
+        }
+    }
+    cout << "YES\n";
 }
 
 int main() {
@@ -50,3 +54,4 @@ int main() {
     * WRITE STUFF DOWN
     * DON'T GET STUCK ON ONE APPROACH
 */
+

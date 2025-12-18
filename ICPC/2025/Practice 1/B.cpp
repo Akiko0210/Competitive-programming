@@ -16,25 +16,33 @@ template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { ce
 #endif
 
 #define FAST ios::sync_with_stdio(false);cin.tie(0);cout.tie(0);
+mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().count());
 
 const ll MOD = 1e9 + 7;
-const int N = 1e5;
-
-vector<vector<int> > G;
 
 void solve() {
-    int n;
-    cin >> n;
-    G.clear();
-    G.resize(n);
-
-    ///
-
+    ll a, b, ans = 0;
+    cin >> a >> b;
+    for(int i = 60; i >= 0; i--) {
+        if((a & (1LL << i)) ^ (b & (1LL << i))) {
+            // choose lowest bit that makes ans > a.
+            ll temp = (1LL << i);
+            while(temp > 0 && ans + temp / 2 >= a) {
+                temp /= 2;
+            }
+            ans += temp;
+            break;
+        } else {
+            if(a & (1LL << i))
+                ans += (1LL << i);
+        }
+    }
+    cout << ans << "\n";
 }
 
 int main() {
     int t = 1;
-    cin >> t;
+    // cin >> t;
     while(t--) {
         solve();
     }
@@ -50,3 +58,4 @@ int main() {
     * WRITE STUFF DOWN
     * DON'T GET STUCK ON ONE APPROACH
 */
+

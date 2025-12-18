@@ -21,12 +21,27 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
-    
+    int n;
+    cin >> n;
+    int s = sqrt(n);
+    if((n % 2 == 1) && s * s == n) {
+        cout << "OS\n";
+        return;
+    }
+    if(s * s == n) {
+        cout << "S\n";
+        return;
+    }
+    if(n & 1) {
+        cout << "O\n";
+        return;
+    }
+    cout << "EMPTY\n";
 }
 
 int main() {
     int t = 1;
-    // cin >> t;
+    cin >> t;
     while(t--) {
         solve();
     }

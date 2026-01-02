@@ -7,7 +7,7 @@
 #define pii pair<int, int>
 #define INF INT_MAX
 using namespace std;
-void debug_out() { cerr << endl; }
+void debug_out() { cerr << endl; }  
 template<typename Head, typename... Tail> void debug_out(Head H, Tail... T) { cerr << ' ' << H; debug_out(T...); }
 #ifdef AKIKO_DEBUG
 #define debug(...) cerr << "\033[1;31m(" << #__VA_ARGS__ << "):\033[0m", debug_out(__VA_ARGS__)

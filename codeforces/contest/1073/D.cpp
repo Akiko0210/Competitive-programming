@@ -21,20 +21,6 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
-    int n, q, bcnt = 18;
-    cin >> n >> q;
-    vector<vector<int> > psum(bcnt, vector<int> (n, 0));
-    while(q--) {
-        int l, r;
-        cin >> l >> r;
-        l--, r--;
-        int len = r - l + 1;
-        for(int i = 0; (1 << i) <= len; i++) {
-            int start = l + (1 << i) - 1;
-            int end = 
-            // 
-        }
-    }
 }
 
 int main() {

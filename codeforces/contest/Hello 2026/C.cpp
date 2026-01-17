@@ -21,20 +21,32 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
-    int n, q, bcnt = 18;
-    cin >> n >> q;
-    vector<vector<int> > psum(bcnt, vector<int> (n, 0));
-    while(q--) {
-        int l, r;
-        cin >> l >> r;
-        l--, r--;
-        int len = r - l + 1;
-        for(int i = 0; (1 << i) <= len; i++) {
-            int start = l + (1 << i) - 1;
-            int end = 
-            // 
-        }
+    int n, m, k;
+    cin >> n >> m >> k;
+    int l = k - 1, r = n - k;
+    if(l > r) swap(l, r);
+
+    if(l == 0) {
+        cout << min(n, (m + 1) / 2 + 1) << "\n";
+        return;
     }
+
+    if(r - 1 + (l + r) <= m) {
+        cout << n << "\n";
+        return;
+    }
+
+
+    if(l - 1 + l * 2 <= m) {
+        m -= l * 3 - 1;
+        cout << l * 2 + 1 + m / 2 << "\n";
+        return;
+    }
+    int ans = 1 + (m + 1) / 3 * 2;
+    if((m + 1) % 3 == 2) {
+        ans ++;
+    }
+    cout << ans << "\n";
 }
 
 int main() {

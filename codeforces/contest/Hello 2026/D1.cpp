@@ -20,21 +20,46 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 
 const ll MOD = 1e9 + 7;
 
-void solve() {
-    int n, q, bcnt = 18;
-    cin >> n >> q;
-    vector<vector<int> > psum(bcnt, vector<int> (n, 0));
-    while(q--) {
-        int l, r;
-        cin >> l >> r;
-        l--, r--;
-        int len = r - l + 1;
-        for(int i = 0; (1 << i) <= len; i++) {
-            int start = l + (1 << i) - 1;
-            int end = 
-            // 
+vector<int> cnt;
+vector<vector<int> > G;
+vector<int> p;
+int ans;
+
+void dfs(int cur, int prev, int level) {
+    p[cur] = prev;
+    cnt[level]++;
+    int size = 1;
+    for(int x : G[cur]) {
+        if(x != prev) {
+            dfs(x, cur, level + 1);
+            size++;
         }
     }
+    ans = max(ans, size);
+}
+
+void solve() {
+    int n;
+    cin >> n;
+    ans = 0;
+    cnt.clear();
+    G.clear();
+    p.clear();
+    G.resize(n);
+    p.resize(n);
+    cnt.resize(n, 0);
+    for(int i = 1; i < n; i++) {
+        int u, v;
+        cin >> u >> v;
+        u--, v--;
+        G[u].pb(v);
+        G[v].pb(u);
+    }
+    dfs(0, 0, 0);
+    for(int x : cnt) {
+        ans = max(ans, x);
+    }
+    cout << ans << "\n";
 }
 
 int main() {

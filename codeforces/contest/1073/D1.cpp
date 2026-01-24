@@ -21,6 +21,26 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
+    int n, cnt1 = 0, cnt2 = 0, pos = -1, mark;
+    string s;
+    cin >> n >> s;
+    for(int i = 0; i < n; i++) {
+        if(s[i] == '(') {
+            cnt1++;
+            if(cnt2 > 0 && pos == -1) {
+                pos = i;
+                mark = cnt1;
+            }
+        }
+        else cnt2++;
+    }
+
+    if(pos != -1 && cnt1 > mark) {
+        cout << n - 2 << "\n";
+    } else {
+        cout << "-1\n";
+    }
+
 }
 
 int main() {

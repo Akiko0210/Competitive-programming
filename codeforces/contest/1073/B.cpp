@@ -21,6 +21,25 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 void solve() {
+    int n;
+    cin >> n;
+    vector<int> a(n), cnt(n + 1, 0);
+    for(int i = 0; i < n; i++) {
+        cin >> a[i];
+        cnt[a[i]]++;
+    }
+
+    if(cnt[0] == 0) {
+        cout << "NO\n";
+        return;
+    }
+
+    if(cnt[0] == 1) {
+        cout << "YES\n";
+        return;
+    }
+    
+    cout << (cnt[1] > 0 ? "YES\n" : "NO\n");
 }
 
 int main() {

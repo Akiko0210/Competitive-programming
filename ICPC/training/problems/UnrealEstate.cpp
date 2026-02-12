@@ -20,82 +20,48 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 
 const ll MOD = 1e9 + 7;
 
-class SegTree {
-    private:
-        vector<int> cnt, sum;
-        int mn, mx;
-    public:
-        SegTree (int L, int R) {
-            int n = R - L;
-            mn = L;
-            mx = R;
-            cnt.resize(n * 4, 0);
-            sum.resize(n * 4, 0);
-        }
-
-        void update(int l, int r, int val) {
-            update(0, mn, mx, l, r, val);
-        }
-
-        void update(int i, int L, int R, int l, int r, int val) {
-            // if(L == R) return;
-            if(L + 1 == R) {
-                cnt[i] += val;
-                sum[i] = (cnt[i] > 0);
-                return;
-            }
-            // R > L + 1;
-            // full cover
-            int x = i * 2 + 1, y = i * 2 + 2, M = (L + R) / 2;
-            if(l <= L && R <= r) {
-                cnt[i] += val;
-            } else {
-                if(l < M) update(x, L, M, l, r, val);
-                if(r > M) update(y, M, R, l, r, val);
-            }
-
-            if(cnt[i] > 0) {
-                sum[i] = R - L;
-            } else {
-                sum[i] = sum[x] + sum[y];
-            }
-        }
-
-        int active() {
-            return sum[0];
-        }
-};
-
 int main() {
-    int n, mx = INT_MIN, mn = INT_MAX;
+    int n;
     cin >> n;
-    map<int, vector<tuple<int, int, int> > > m;
+    map<double, vector<pair<double, int > > > m;
+    vector<double> xs;
     for(int i = 0; i < n; i++) {
-        double x1, y1, x2, y2;
+        double x1, x2, y1, y2;
         cin >> x1 >> y1 >> x2 >> y2;
-        int X1, Y1, X2, Y2;
-        X1 = int(round(x1 * 100));
-        X2 = int(round(x2 * 100));
-        Y1 = int(round(y1 * 100));
-        Y2 = int(round(y2 * 100));
-        m[Y1].pb({X1, X2, 1});
-        m[Y2].pb({X1, X2, -1});
-        mx = max(mx, X2);
-        mn = min(mn, X1);
+        xs.pb(x1);
+        xs.pb(x2);
+        m[y1].pb({x1, 1});
+        m[y1].pb({x2, -1});
+        m[y2].pb({x1, -1});
+        m[y2].pb({x2, 1});
     }
-    SegTree st(mn, mx);
-    long long ans = 0, preactive = 0, prey = -1e9;
-    for(auto &[y, info] : m) {
-        for(auto [l, r, val] : info) {
-            st.update(l, r, val);
-        }
 
-        int active = st.active();
-        ans += preactive * (y - prey);
+    sort(xs.begin(), xs.end());
+    xs.erase(unique(xs.begin(), xs.end()), xs.end());
+    unordered_map<double, int> xind;
+    int len = xs.size();
+    for(int i = 0; i < len; i++) {
+        xind[xs[i]] = i;
+    }
+
+    vector<int> sweep(len, 0);
+    double ans = 0, prey = -1e9, preactive = 0;
+    for(auto &[y, pos] : m) {
+        for(auto &[x, val] : pos) {
+            sweep[xind[x]] += val;
+        }
+        vector<int> sum = sweep;
+        double active = 0;
+        for(int i = 1; i < len; i++) {
+            active += (xs[i] - xs[i - 1]) * (sum[i - 1] > 0);
+            sum[i] += sum[i - 1];
+        }
+        ans += (y - prey) * preactive;
         preactive = active;
         prey = y;
     }
-    cout << fixed << setprecision(2) <<  double(ans) / 10000 << "\n";
+
+    cout << fixed << setprecision(2) << ans << "\n";
 
     return 0;
 }

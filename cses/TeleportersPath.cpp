@@ -1,4 +1,4 @@
-// Hamilton's path converted into Eulerian tour algorithm.
+// Eulerian tour.
 
 #include <bits/stdc++.h>
 #define ll long long
@@ -23,20 +23,29 @@ mt19937_64 rng((unsigned int) chrono::steady_clock::now().time_since_epoch().cou
 const ll MOD = 1e9 + 7;
 
 int main() {
-    int n;
-    cin >> n;
-    if(n == 1) {
-        cout << "01\n";
+    int n, m;
+    cin >> n >> m;
+    vector<vector<int> > G(n + 1);
+    vector<int> indegree(n + 1, 0), outdegree(n + 1, 0);
+    for(int i = 0; i < m; i++) {
+        int a, b;
+        cin >> a >> b;
+        G[a].pb(b);
+        indegree[b]++;
+        outdegree[a]++;
+    }
+
+    if((indegree[1] != outdegree[1] - 1) || 
+    (indegree[n] - 1 != outdegree[n])) {
+        cout << "IMPOSSIBLE\n";
         return 0;
     }
-    int max_mask = (1 << (n - 1));
-    vector<vector<int> > G(max_mask);
 
-    for(int cur = 0; cur < max_mask; cur++) {
-        int addone = ((cur << 1) + 1) % max_mask;
-        int addzero = (cur << 1) % max_mask;
-        G[cur].pb(addone);
-        G[cur].pb(addzero);
+    for(int i = 2; i < n; i++) {
+        if(indegree[i] != outdegree[i]) {
+            cout << "IMPOSSIBLE\n";
+            return 0;
+        }
     }
 
     vector<int> tour;
@@ -50,16 +59,23 @@ int main() {
         tour.pb(cur);
     };
 
-    dfs(0);
-    reverse(tour.begin(), tour.end());
-    for(int i = 0; i < n - 2; i++) {
-        cout << "0";
+    dfs(1);
+
+    if(tour.size() != m + 1) {
+        cout << "IMPOSSIBLE\n";
+        return 0;
+    }
+    // if(tour[0] != n || tour.size() != m + 1) {
+    //     cout << "IMPOSSIBLE\n";
+    //     return 0;
+    // }
+
+    for(int i = tour.size() - 1; i >= 0; i--) {
+        cout << tour[i] << " ";
     }
 
-    for(int x : tour) {
-        cout << x % 2;
-    }
     cout << "\n";
+
 
     return 0;
 }
